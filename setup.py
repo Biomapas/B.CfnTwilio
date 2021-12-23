@@ -18,10 +18,11 @@ setup(
         # Exclude virtual environment.
         'venv',
         # Exclude test source files.
-        'b_cfn_twilio_activity_test'
+        'b_cfn_twilio_activity_test',
+        'b_cfn_twilio_activity_test.*'
     ]),
     description=(
-        'AWS CDK based custom resource that creates Twilio activities.'
+        'A collection of AWS CDK based twilio resources.'
     ),
     long_description=README + '\n\n' + HISTORY,
     long_description_content_type='text/markdown',
@@ -34,8 +35,8 @@ setup(
     ],
     author='Laimonas Sutkus',
     author_email='laimonas.sutkus@biomapas.com',
-    keywords='AWS CDK Lambda Layer Twilio Activity',
-    url='https://github.com/biomapas/B.CfnTwilioActivity.git',
+    keywords='AWS CDK Lambda Twilio',
+    url='https://github.com/biomapas/B.CfnTwilio.git',
     classifiers=[
         'Programming Language :: Python :: 3',
         'Operating System :: OS Independent',
