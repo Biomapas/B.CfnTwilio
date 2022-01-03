@@ -18,8 +18,8 @@ setup(
         # Exclude virtual environment.
         'venv',
         # Exclude test source files.
-        'b_cfn_twilio_activity_test',
-        'b_cfn_twilio_activity_test.*'
+        'b_cfn_twilio_test',
+        'b_cfn_twilio_test.*'
     ]),
     description=(
         'A collection of AWS CDK based twilio resources.'
