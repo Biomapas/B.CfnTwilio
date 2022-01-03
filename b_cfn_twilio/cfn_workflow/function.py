@@ -35,7 +35,7 @@ class TwilioWorkflowSingletonFunction(SingletonFunction):
             code=self.__code(),
             layers=[TwilioLayer(scope, f'TwilioLayerFor{name}')],
             timeout=Duration.minutes(1),
-            handler='index.main.handler',
+            handler='main.index.handler',
             runtime=Runtime.PYTHON_3_8,
             environment={
                 'TWILIO_ACCOUNT_SID': twilio_account_sid,

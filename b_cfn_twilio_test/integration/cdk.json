@@ -3,8 +3,8 @@
   "pathMetadata": false,
   "versionReporting": false,
   "requireApproval": "never",
-  "toolkitStackName": "BTwilioLambdaLayerToolkit",
-  "toolkitBucketName": "BTwilioLambdaLayerBucket",
+  "toolkitStackName": "BCfnTwilioToolkit",
+  "toolkitBucketName": "BCfnTwilioBucket",
   "context": {
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
