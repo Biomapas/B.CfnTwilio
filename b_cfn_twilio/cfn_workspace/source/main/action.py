@@ -1,10 +1,9 @@
 import json
 import logging
-import os
 from typing import Dict, Any, Optional, Tuple, List
 
 from twilio.base import values
-from twilio.base.exceptions import TwilioException
+from twilio.base.exceptions import TwilioException, TwilioRestException
 from twilio.rest import Client
 from twilio.rest.taskrouter.v1.workspace import WorkspaceInstance
 
@@ -18,12 +17,12 @@ class Action:
         self.__resource_id: Optional[str] = invocation_event.get('PhysicalResourceId')
 
         try:
-            self.TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
-            self.TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
+            self.TWILIO_ACCOUNT_SID = self.__parameters['TwilioAccountSid']
+            self.TWILIO_AUTH_TOKEN = self.__parameters['TwilioAuthToken']
             self.WORKSPACE_NAME = self.__parameters['WorkspaceName']
 
         except KeyError as ex:
-            logger.error(f'Missing environment: {repr(ex)}.')
+            logger.error(f'Missing parameter: {repr(ex)}.')
             raise
 
         self.EVENT_CALLBACK_URL: str = self.__parameters.get('EventCallbackUrl') or values.unset
@@ -46,6 +45,7 @@ class Action:
         workspace = self.client.taskrouter.workspaces.create(
             friendly_name=self.WORKSPACE_NAME,
             event_callback_url=self.EVENT_CALLBACK_URL,
+            events_filter=self.EVENTS_FILTER,
             multi_task_enabled=self.MULTI_TASK_ENABLED,
             prioritize_queue_order=self.PRIORITIZE_QUEUE_ORDER
         )
@@ -68,6 +68,7 @@ class Action:
         workspace.update(
             friendly_name=self.WORKSPACE_NAME,
             event_callback_url=self.EVENT_CALLBACK_URL,
+            events_filter=self.EVENTS_FILTER,
             multi_task_enabled=self.MULTI_TASK_ENABLED,
             prioritize_queue_order=self.PRIORITIZE_QUEUE_ORDER
         )
@@ -85,7 +86,12 @@ class Action:
         logger.info(f'Initiating resource deletion with these parameters: {json.dumps(self.__parameters)}.')
 
         workspace_sid = self.__resource_id
-        self.client.taskrouter.workspaces.get(workspace_sid).delete()
+        try:
+            self.client.taskrouter.workspaces.get(workspace_sid).delete()
+        except TwilioRestException as ex:
+            if ex.status != 404:
+                # If status is 404, it means the resource was deleted manually or was not created at all.
+                raise
 
         return {'WorkspaceSid': workspace_sid}, workspace_sid
 

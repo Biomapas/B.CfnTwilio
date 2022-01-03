@@ -20,25 +20,19 @@ class TwilioWorkspaceSingletonFunction(SingletonFunction):
     def __init__(
             self,
             scope: Stack,
-            name: str,
-            twilio_account_sid: str,
-            twilio_auth_token: str
+            name: str
     ) -> None:
         self.__name = name
 
         super().__init__(
             scope=scope,
             id=name,
-            uuid=f'{name}-uuid',
+            uuid='3b8d2b61-f286-4bcb-bfe2-1462ecfdf6fb',
             function_name=name,
             code=self.__code(),
             layers=[TwilioLayer(scope, f'TwilioLayerFor{name}')],
             handler='main.index.handler',
-            runtime=Runtime.PYTHON_3_8,
-            environment={
-                "TWILIO_ACCOUNT_SID": twilio_account_sid,
-                "TWILIO_AUTH_TOKEN": twilio_auth_token,
-            }
+            runtime=Runtime.PYTHON_3_8
         )
 
     @lru_cache

@@ -1,9 +1,8 @@
 import json
 import logging
-import os
 from typing import Dict, Any, Optional, Tuple
 
-from twilio.base.exceptions import TwilioException
+from twilio.base.exceptions import TwilioException, TwilioRestException
 from twilio.rest import Client
 
 logger = logging.getLogger(__name__)
@@ -16,12 +15,12 @@ class Action:
         self.__resource_id: Optional[str] = invocation_event.get('PhysicalResourceId')
 
         try:
-            self.TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
-            self.TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
-            self.TWILIO_WORKSPACE_SID = os.environ['TWILIO_WORKSPACE_SID']
+            self.TWILIO_ACCOUNT_SID = self.__parameters['TwilioAccountSid']
+            self.TWILIO_AUTH_TOKEN = self.__parameters['TwilioAuthToken']
+            self.TWILIO_WORKSPACE_SID = self.__parameters['TwilioWorkspaceSid']
             self.TWILIO_TASK_QUEUE_NAME = self.__parameters['TwilioTaskQueueName']
         except KeyError as ex:
-            logger.error(f'Missing environment: {repr(ex)}.')
+            logger.error(f'Missing parameter: {repr(ex)}.')
             raise
 
         self.client = self.__get_twilio_client(self.TWILIO_ACCOUNT_SID, self.TWILIO_AUTH_TOKEN)
@@ -70,7 +69,12 @@ class Action:
         logger.info(f'Initiating resource deletion with these parameters: {json.dumps(self.__parameters)}.')
 
         task_queue_sid = self.__resource_id
-        self.client.taskrouter.workspaces.get(self.TWILIO_WORKSPACE_SID).task_queues.get(task_queue_sid).delete()
+        try:
+            self.client.taskrouter.workspaces.get(self.TWILIO_WORKSPACE_SID).task_queues.get(task_queue_sid).delete()
+        except TwilioRestException as ex:
+            if ex.status != 404:
+                # If status is 404, it means the resource was deleted manually or was not created at all.
+                raise
 
         return {'TaskQueueSid': task_queue_sid}, task_queue_sid
 

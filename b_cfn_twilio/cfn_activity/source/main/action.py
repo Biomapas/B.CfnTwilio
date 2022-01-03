@@ -1,7 +1,6 @@
 import base64
 import json
 import logging
-import os
 from typing import Dict, Any, Optional, Tuple, List
 
 from twilio.base.exceptions import TwilioException
@@ -19,11 +18,11 @@ class Action:
         self.__resource_id: Optional[str] = invocation_event.get('PhysicalResourceId')
 
         try:
-            self.TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
-            self.TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
-            self.TWILIO_WORKSPACE_SID = os.environ['TWILIO_WORKSPACE_SID']
+            self.TWILIO_ACCOUNT_SID = self.__parameters['TwilioAccountSid']
+            self.TWILIO_AUTH_TOKEN = self.__parameters['TwilioAuthToken']
+            self.TWILIO_WORKSPACE_SID = self.__parameters['TwilioWorkspaceSid']
         except KeyError as ex:
-            logger.error(f'Missing environment: {repr(ex)}.')
+            logger.error(f'Missing parameter: {repr(ex)}.')
             raise
 
         self.__activities = {

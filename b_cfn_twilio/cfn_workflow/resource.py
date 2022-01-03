@@ -18,6 +18,9 @@ class TwilioWorkflowResource(CustomResource):
     def __init__(
             self,
             scope: Stack,
+            twilio_account_sid: str,
+            twilio_auth_token: str,
+            twilio_workspace_sid: str,
             workflow_function: TwilioWorkflowSingletonFunction,
             workflow_name: str,
             task_queue_sid: str,
@@ -28,6 +31,9 @@ class TwilioWorkflowResource(CustomResource):
         """
 
         :param scope: CloudFormation template stack in which this resource will belong.
+        :param twilio_account_sid: Twilio Account SID.
+        :param twilio_auth_token: Twilio Auth SID.
+        :param twilio_workspace_sid: Twilio Workspace SID.
         :param workflow_function: Resource function.
         :param workflow_name: Name that will be provided to the created Workflow.
         :param task_queue_sid: TaskQueue that will be assigned as default queue for this Workflow.
@@ -53,7 +59,10 @@ class TwilioWorkflowResource(CustomResource):
                 }),
                 'AssignmentCallbackUrl': assignment_callback_url,
                 'FallbackAssignmentCallbackUrl': fallback_assignment_callback_url,
-                'TaskReservationTimeout': task_reservation_timeout
+                'TaskReservationTimeout': task_reservation_timeout,
+                'TwilioAccountSid': twilio_account_sid,
+                'TwilioAuthToken': twilio_auth_token,
+                'TwilioWorkspaceSid': twilio_workspace_sid,
             }
         )
 
