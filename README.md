@@ -53,15 +53,11 @@ pip install .
 Create a Twilio Workspace:
 
 ```python
-from b_cfn_twilio.cfn_workspace.function import TwilioWorkspaceSingletonFunction
 from b_cfn_twilio.cfn_workspace.resource import TwilioWorkspaceResource
 
 workspace = TwilioWorkspaceResource(
     scope=stack,
-    workspace_function=TwilioWorkspaceSingletonFunction(
-        scope=stack,
-        name='WorkspaceFunction'
-    ),
+    name='WorkspaceResource',
     workspace_name='WorkspaceName',
     twilio_account_sid='TWILIO_ACCOUNT_SID',
     twilio_auth_token='TWILIO_AUTH_TOKEN'
@@ -74,15 +70,11 @@ print(workspace.workspace_sid)
 Create a Twilio Workflow:
 
 ```python
-from b_cfn_twilio.cfn_task_queue.function import TwilioTaskQueueSingletonFunction
 from b_cfn_twilio.cfn_task_queue.resource import TwilioTaskQueueResource
 
 task_queue = TwilioTaskQueueResource(
     scope=stack,
-    task_queue_function=TwilioTaskQueueSingletonFunction(
-        scope=stack,
-        name='TaskQueueFunction'
-    ),
+    name='TaskQueueResource',
     task_queue_name='TaskQueueName',
     twilio_account_sid='TWILIO_ACCOUNT_SID',
     twilio_auth_token='TWILIO_AUTH_TOKEN',
@@ -96,15 +88,11 @@ print(task_queue.task_queue_sid)
 Create a Twilio TaskQueue:
 
 ```python
-from b_cfn_twilio.cfn_workflow.function import TwilioWorkflowSingletonFunction
 from b_cfn_twilio.cfn_workflow.resource import TwilioWorkflowResource
 
 workflow = TwilioWorkflowResource(
     scope=stack,
-    workflow_function=TwilioWorkflowSingletonFunction(
-        scope=stack,
-        name='WorkflowFunction'
-    ),
+    name='WorkflowResource',
     workflow_name='Workflow',
     task_queue_sid=task_queue.task_queue_sid,
     twilio_account_sid='TWILIO_ACCOUNT_SID',
@@ -119,16 +107,12 @@ print(workflow.workflow_sid)
 Create Twilio Activities:
 
 ```python
-from b_cfn_twilio.cfn_activity.function import TwilioActivitySingletonFunction
 from b_cfn_twilio.cfn_activity.resource import TwilioActivityResource
 from b_cfn_twilio.cfn_activity.twilio_activity import TwilioActivity
 
 activities = TwilioActivityResource(
     scope=stack,
-    activity_function=TwilioActivitySingletonFunction(
-        scope=stack,
-        name='ActivityFunction'
-    ),
+    name='ActivityResource',
     activities=[
         TwilioActivity('Available', True, False),
         TwilioActivity('Unavailable', False, True)

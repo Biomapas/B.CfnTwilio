@@ -3,14 +3,10 @@ import os
 from aws_cdk.core import Construct
 from b_aws_testing_framework.tools.cdk_testing.testing_stack import TestingStack
 
-from b_cfn_twilio.cfn_activity.function import TwilioActivitySingletonFunction
 from b_cfn_twilio.cfn_activity.resource import TwilioActivityResource
 from b_cfn_twilio.cfn_activity.twilio_activity import TwilioActivity
-from b_cfn_twilio.cfn_task_queue.function import TwilioTaskQueueSingletonFunction
 from b_cfn_twilio.cfn_task_queue.resource import TwilioTaskQueueResource
-from b_cfn_twilio.cfn_workflow.function import TwilioWorkflowSingletonFunction
 from b_cfn_twilio.cfn_workflow.resource import TwilioWorkflowResource
-from b_cfn_twilio.cfn_workspace.function import TwilioWorkspaceSingletonFunction
 from b_cfn_twilio.cfn_workspace.resource import TwilioWorkspaceResource
 
 
@@ -29,10 +25,7 @@ class Infrastructure(TestingStack):
 
         workspace = TwilioWorkspaceResource(
             scope=self,
-            workspace_function=TwilioWorkspaceSingletonFunction(
-                scope=self,
-                name=f'{TestingStack.global_prefix()}TestWorkspaceFunction'
-            ),
+            name=f'{TestingStack.global_prefix()}TestWorkspaceResource',
             workspace_name=f'{TestingStack.global_prefix()}TestWorkspace',
             twilio_account_sid=self.TWILIO_ACCOUNT_SID,
             twilio_auth_token=self.TWILIO_AUTH_TOKEN,
@@ -41,10 +34,7 @@ class Infrastructure(TestingStack):
 
         task_queue = TwilioTaskQueueResource(
             scope=self,
-            task_queue_function=TwilioTaskQueueSingletonFunction(
-                scope=self,
-                name=f'{TestingStack.global_prefix()}TestTaskQueueFunction'
-            ),
+            name=f'{TestingStack.global_prefix()}TestTaskQueueResource',
             task_queue_name=f'{TestingStack.global_prefix()}TestTaskQueue',
             twilio_account_sid=self.TWILIO_ACCOUNT_SID,
             twilio_auth_token=self.TWILIO_AUTH_TOKEN,
@@ -53,10 +43,7 @@ class Infrastructure(TestingStack):
 
         workflow = TwilioWorkflowResource(
             scope=self,
-            workflow_function=TwilioWorkflowSingletonFunction(
-                scope=self,
-                name=f'{TestingStack.global_prefix()}TestWorkflowFunction'
-            ),
+            name=f'{TestingStack.global_prefix()}TestWorkflowResource',
             workflow_name=f'{TestingStack.global_prefix()}TestWorkflow',
             task_queue_sid=task_queue.task_queue_sid,
             twilio_account_sid=self.TWILIO_ACCOUNT_SID,
@@ -66,17 +53,14 @@ class Infrastructure(TestingStack):
 
         activities = TwilioActivityResource(
             scope=self,
-            activity_function=TwilioActivitySingletonFunction(
-                scope=self,
-                name=f'{TestingStack.global_prefix()}TestActivityFunction'
-            ),
+            name=f'{TestingStack.global_prefix()}TestActivityResource',
+            twilio_account_sid=self.TWILIO_ACCOUNT_SID,
+            twilio_auth_token=self.TWILIO_AUTH_TOKEN,
+            twilio_workspace_sid=workspace.workspace_sid,
             activities=[
                 TwilioActivity('Available', True, False),
                 TwilioActivity('Unavailable', False, True)
             ],
-            twilio_account_sid=self.TWILIO_ACCOUNT_SID,
-            twilio_auth_token=self.TWILIO_AUTH_TOKEN,
-            twilio_workspace_sid=workspace.workspace_sid
         )
 
         self.add_output(self.WORKSPACE_SID_KEY, workspace.workspace_sid)

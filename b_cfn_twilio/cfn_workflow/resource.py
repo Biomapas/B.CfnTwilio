@@ -18,10 +18,10 @@ class TwilioWorkflowResource(CustomResource):
     def __init__(
             self,
             scope: Stack,
+            name: str,
             twilio_account_sid: str,
             twilio_auth_token: str,
             twilio_workspace_sid: str,
-            workflow_function: TwilioWorkflowSingletonFunction,
             workflow_name: str,
             task_queue_sid: str,
             assignment_callback_url: Optional[str] = None,
@@ -31,19 +31,25 @@ class TwilioWorkflowResource(CustomResource):
         """
 
         :param scope: CloudFormation template stack in which this resource will belong.
+        :param name: Custom resource name.
         :param twilio_account_sid: Twilio Account SID.
         :param twilio_auth_token: Twilio Auth SID.
         :param twilio_workspace_sid: Twilio Workspace SID.
-        :param workflow_function: Resource function.
         :param workflow_name: Name that will be provided to the created Workflow.
         :param task_queue_sid: TaskQueue that will be assigned as default queue for this Workflow.
         :param assignment_callback_url: Endpoint URL where Twilio will get instructions how to assign a call to a worker.
         :param fallback_assignment_callback_url: Secondary assignment endpoint URL.
         :param task_reservation_timeout: This is the value (in seconds), on how long a task should be reserved before going to the next matching worker.
         """
+
+        workflow_function = TwilioWorkflowSingletonFunction(
+            scope=scope,
+            name=f'{name}Function'
+        )
+
         super().__init__(
             scope=scope,
-            id=f'CustomResource{workflow_function.function_name}',
+            id=f'CustomResource{name}',
             service_token=workflow_function.function_arn,
             pascal_case_properties=True,
             removal_policy=RemovalPolicy.DESTROY,

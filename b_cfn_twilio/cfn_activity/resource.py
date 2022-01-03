@@ -18,20 +18,20 @@ class TwilioActivityResource(CustomResource):
     def __init__(
             self,
             scope: Stack,
+            name: str,
             twilio_account_sid: str,
             twilio_auth_token: str,
             twilio_workspace_sid: str,
-            activity_function: TwilioActivitySingletonFunction,
             activities: List[TwilioActivity]
     ) -> None:
         """
 
-        :param scope:
-        :param twilio_account_sid:
-        :param twilio_auth_token:
-        :param twilio_workspace_sid:
-        :param activity_function:
-        :param activities:
+        :param scope: CloudFormation template stack in which this resource will belong.
+        :param name: Custom resource name.
+        :param twilio_account_sid: Twilio Account SID.
+        :param twilio_auth_token: Twilio Auth SID.
+        :param twilio_workspace_sid: Twilio Workspace SID.
+        :param activities: List of Twilio Activities.
         """
 
         if len(activities) == 0:
@@ -52,9 +52,14 @@ class TwilioActivityResource(CustomResource):
             } for activity in activities
         }
 
+        activity_function = TwilioActivitySingletonFunction(
+            scope=scope,
+            name=f'{name}Function'
+        )
+
         super().__init__(
             scope=scope,
-            id=f'CustomResource{activity_function.function_name}',
+            id=f'CustomResource{name}',
             service_token=activity_function.function_arn,
             pascal_case_properties=True,
             removal_policy=RemovalPolicy.DESTROY,

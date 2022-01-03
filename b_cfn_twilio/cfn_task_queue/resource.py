@@ -15,26 +15,31 @@ class TwilioTaskQueueResource(CustomResource):
     def __init__(
             self,
             scope: Stack,
+            name: str,
             twilio_account_sid: str,
             twilio_auth_token: str,
             twilio_workspace_sid: str,
-            task_queue_function: TwilioTaskQueueSingletonFunction,
             task_queue_name: str
     ) -> None:
         """
         Constructor.
 
         :param scope: CloudFormation template stack in which this resource will belong.
+        :param name: Custom resource name.
         :param twilio_account_sid: Twilio Account SID.
         :param twilio_auth_token: Twilio Auth SID.
-        :param twilio_workspace_sid: SID of the Workspace to create TaskQueue for.
-        :param task_queue_function: Resource function.
+        :param twilio_workspace_sid: Twilio Workspace SID.
         :param task_queue_name: Name that will be provided to the created TaskQueue.
         """
 
+        task_queue_function = TwilioTaskQueueSingletonFunction(
+            scope=scope,
+            name=f'{name}Function'
+        )
+
         super().__init__(
             scope=scope,
-            id=f'CustomResource{task_queue_function.function_name}',
+            id=f'CustomResource{name}',
             service_token=task_queue_function.function_arn,
             pascal_case_properties=True,
             removal_policy=RemovalPolicy.DESTROY,
