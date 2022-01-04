@@ -8,11 +8,10 @@ from b_cfn_twilio.cfn_activity.twilio_activity import TwilioActivity
 
 class TwilioActivityResource(CustomResource):
     """
-    Custom resource used for managing a Twilio workspace for a deployment.
+    Custom resource used for managing a Twilio activities for a deployment.
 
-    Creates a workspace on stack creation.
-    Updates the workspace on workspace name change.
-    Deletes the workspace on stack deletion.
+    Creates activities on stack creation.
+    Updates activities, sets new defaults, renames, etc.
     """
 
     def __init__(
@@ -25,6 +24,7 @@ class TwilioActivityResource(CustomResource):
             activities: List[TwilioActivity]
     ) -> None:
         """
+        Constructor.
 
         :param scope: CloudFormation template stack in which this resource will belong.
         :param name: Custom resource name.
@@ -35,11 +35,11 @@ class TwilioActivityResource(CustomResource):
         """
 
         if len(activities) == 0:
-            raise AttributeError('At least one cfn_activity must be provided.')
+            raise AttributeError('At least one activity must be provided.')
 
         default_activities_count = len([activity.default for activity in activities if activity.default])
         if default_activities_count != 1:
-            raise AttributeError('Exactly one cfn_activity must be default in a Workspace.')
+            raise AttributeError('Exactly one activity must be default in a Workspace.')
 
         if len(activities) != len(set([activity.friendly_name for activity in activities])):
             raise AttributeError('Two activities can not have the same name.')
@@ -72,7 +72,22 @@ class TwilioActivityResource(CustomResource):
         )
 
     def get_activity_sid(self, friendly_name: str) -> str:
+        """
+        Get the Activity SID output from the custom resource for the desired activity.
+
+        :param friendly_name: Human readable name of the Activity.
+
+        :return: Activity SID string.
+        """
+
         return self.get_att_string(f'{self.__parametrize_name(friendly_name)}ActivitySid')
 
     def __parametrize_name(self, friendly_name: str) -> str:
+        """
+        Ensures that names used as keys (i.e. dictionary key) adhere to a common pattern - strings without spaces.
+
+        :param friendly_name: Human readable name of the Activity.
+
+        :return: Formatted string.
+        """
         return friendly_name.replace(' ', '')

@@ -4,17 +4,16 @@ from functools import lru_cache
 
 from aws_cdk.aws_lambda import Code, SingletonFunction, Runtime
 from aws_cdk.core import Stack
-
 from b_twilio_sdk_layer.layer import Layer as TwilioLayer
 
 
 class TwilioWorkspaceSingletonFunction(SingletonFunction):
     """
-    Custom workspace resource Singleton Lambda function.
+    Custom resource Singleton Lambda function.
 
-    Creates a workspace on stack creation.
-    Updates the workspace on workspace name change.
-    Deletes the workspace on stack deletion.
+    Creates Workspace on stack creation.
+    Updates Workspace on workspace name change.
+    Deletes Workspace on stack deletion.
     """
 
     def __init__(

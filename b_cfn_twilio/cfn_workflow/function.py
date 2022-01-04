@@ -9,11 +9,11 @@ from b_twilio_sdk_layer.layer import Layer as TwilioLayer
 
 class TwilioWorkflowSingletonFunction(SingletonFunction):
     """
-    Custom workflow resource Singleton Lambda function.
+    Custom resource Singleton Lambda function.
 
-    Creates a workflow on stack creation.
-    Updates the workflow on workflow name change.
-    Deletes the workflow on stack deletion.
+    Creates Workflow on stack creation.
+    Updates Workflow when parameters change.
+    Deletes Workflow on stack deletion.
     """
 
     def __init__(

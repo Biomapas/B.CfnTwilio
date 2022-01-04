@@ -8,11 +8,11 @@ from b_cfn_twilio.cfn_workflow.function import TwilioWorkflowSingletonFunction
 
 class TwilioWorkflowResource(CustomResource):
     """
-    Custom resource used for managing a Twilio workflow for a deployment.
+    Custom resource used for managing a Twilio Workflow for a deployment.
 
-    Creates a workflow on stack creation.
-    Updates the workflow on workflow name change.
-    Deletes the workflow on stack deletion.
+    Creates Workflow on stack creation.
+    Updates Workflow when parameters change.
+    Deletes Workflow on stack deletion.
     """
 
     def __init__(
@@ -73,5 +73,11 @@ class TwilioWorkflowResource(CustomResource):
         )
 
     @property
-    def workflow_sid(self):
+    def workflow_sid(self) -> str:
+        """
+        Get the Workflow SID output from the custom resource.
+
+        :return: Workflow SID string.
+        """
+
         return self.get_att_string("WorkflowSid")

@@ -9,11 +9,10 @@ from b_twilio_sdk_layer.layer import Layer as TwilioLayer
 
 class TwilioActivitySingletonFunction(SingletonFunction):
     """
-    Custom cfn_activity resource Singleton Lambda function.
+    Custom activity resource Singleton Lambda function.
 
     Creates activities on stack creation.
-    Updates activities on their name changes.
-    Deletes activities on stack deletion.
+    Updates activities, sets new defaults, renames, etc.
     """
 
     def __init__(

@@ -8,11 +8,13 @@ from b_cfn_twilio.cfn_workspace.function import TwilioWorkspaceSingletonFunction
 
 class TwilioWorkspaceResource(CustomResource):
     """
-    Custom resource used for managing a Twilio workspace for a deployment.
+    Custom resource used for managing a Twilio Workspace for a deployment.
 
-    Creates a workspace on stack creation.
-    Updates the workspace on workspace name change.
-    Deletes the workspace on stack deletion.
+    Creates Workspace on stack creation.
+    Updates Workspace on workspace name change.
+    Deletes Workspace on stack deletion.
+
+
     """
 
     def __init__(
@@ -64,5 +66,11 @@ class TwilioWorkspaceResource(CustomResource):
         )
 
     @property
-    def workspace_sid(self):
+    def workspace_sid(self) -> str:
+        """
+        Get the Workspace SID output from the custom resource.
+
+        :return: Workspace SID string.
+        """
+
         return self.get_att_string("WorkspaceSid")

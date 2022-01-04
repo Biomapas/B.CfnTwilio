@@ -5,11 +5,11 @@ from b_cfn_twilio.cfn_task_queue.function import TwilioTaskQueueSingletonFunctio
 
 class TwilioTaskQueueResource(CustomResource):
     """
-    Custom resource used for managing a Twilio task_queue for a deployment.
+    Custom resource used for managing a Twilio Task Queue for a deployment.
 
-    Creates a task_queue on stack creation.
-    Updates the task_queue on task_queue name change.
-    Deletes the task_queue on stack deletion.
+    Creates Task Queue on stack creation.
+    Updates Task Queue when parameters change.
+    Deletes Task Queue on stack deletion.
     """
 
     def __init__(
@@ -52,5 +52,11 @@ class TwilioTaskQueueResource(CustomResource):
         )
 
     @property
-    def task_queue_sid(self):
+    def task_queue_sid(self) -> str:
+        """
+        Get the Task Queue SID output from the custom resource.
+
+        :return: Task Queue SID string.
+        """
+
         return self.get_att_string('TaskQueueSid')

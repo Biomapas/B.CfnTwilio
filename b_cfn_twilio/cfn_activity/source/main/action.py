@@ -52,7 +52,7 @@ class Action:
             'UnavailableActivity': workspace.activities.list(friendly_name='Unavailable')[0],
         }
 
-        # It is safe to assume that this value will always be set in the following loop, since the resource requires exactly one cfn_activity to be default.
+        # It is safe to assume that this value will always be set in the following loop, since the resource requires exactly one activity to be default.
         default_activity_sid = None
 
         # Create new activities.
@@ -66,7 +66,7 @@ class Action:
             if activity['default']:
                 default_activity_sid = created_activities[key].sid
 
-        # Set the default cfn_activity.
+        # Set the default activity.
         workspace.update(
             default_activity_sid=default_activity_sid,
             timeout_activity_sid=default_activity_sid
@@ -102,7 +102,7 @@ class Action:
         activity_sids: Dict[str, str] = json.loads(base64.b64decode(self.__resource_id))
         workspace = self.client.taskrouter.workspaces.get(self.TWILIO_WORKSPACE_SID)
 
-        # It is safe to assume that this value will always be set in the following loop, since the resource requires exactly one cfn_activity to be default.
+        # It is safe to assume that this value will always be set in the following loop, since the resource requires exactly one activity to be default.
         default_activity_sid = None
 
         # Create newly added activities.
@@ -117,7 +117,7 @@ class Action:
             if activity['default']:
                 default_activity_sid = activity_sids[activity_sid_key]
 
-        # Update default cfn_activity.
+        # Update default activity.
         workspace.update(
             default_activity_sid=default_activity_sid,
             timeout_activity_sid=default_activity_sid

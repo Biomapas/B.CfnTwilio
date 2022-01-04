@@ -10,11 +10,11 @@ from b_twilio_sdk_layer.layer import Layer as TwilioLayer
 
 class TwilioTaskQueueSingletonFunction(SingletonFunction):
     """
-    Custom workspace resource Singleton Lambda function.
+    Custom resource Singleton Lambda function.
 
-    Creates a workspace on stack creation.
-    Updates the workspace on workspace name change.
-    Deletes the workspace on stack deletion.
+    Creates Task Queue on stack creation.
+    Updates Task Queue when parameters change.
+    Deletes Task Queue on stack deletion.
     """
 
     def __init__(
