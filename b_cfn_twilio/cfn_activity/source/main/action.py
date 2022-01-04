@@ -21,15 +21,10 @@ class Action:
             self.TWILIO_ACCOUNT_SID = self.__parameters['TwilioAccountSid']
             self.TWILIO_AUTH_TOKEN = self.__parameters['TwilioAuthToken']
             self.TWILIO_WORKSPACE_SID = self.__parameters['TwilioWorkspaceSid']
+            self.__activities = self.__parameters['Activities']
         except KeyError as ex:
             logger.error(f'Missing parameter: {repr(ex)}.')
             raise
-
-        self.__activities = {
-            key: value
-            for key, value in self.__parameters.items()
-            if key.endswith('Activity')
-        }
 
         self.client = self.__get_twilio_client(self.TWILIO_ACCOUNT_SID, self.TWILIO_AUTH_TOKEN)
 

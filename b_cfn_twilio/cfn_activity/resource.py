@@ -64,7 +64,7 @@ class TwilioActivityResource(CustomResource):
             pascal_case_properties=True,
             removal_policy=RemovalPolicy.DESTROY,
             properties={
-                **self.__activities,
+                'Activities': self.__activities,
                 'TwilioAccountSid': twilio_account_sid,
                 'TwilioAuthToken': twilio_auth_token,
                 'TwilioWorkspaceSid': twilio_workspace_sid
