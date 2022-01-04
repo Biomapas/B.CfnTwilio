@@ -33,9 +33,9 @@ setup(
         'twilio>=6.44.0,<7.0.0',
         'b-twilio-sdk-layer>=1.0.0,<2.0.0'
     ],
-    author='Laimonas Sutkus',
-    author_email='laimonas.sutkus@biomapas.com',
-    keywords='AWS CDK Lambda Twilio',
+    author='Robertas Stankevičius',
+    author_email='robertas.stankevicius@biomapas.com',
+    keywords='AWS CDK Lambda CloudFormation Twilio',
     url='https://github.com/biomapas/B.CfnTwilio.git',
     classifiers=[
         'Programming Language :: Python :: 3',
