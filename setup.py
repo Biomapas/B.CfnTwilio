@@ -31,7 +31,8 @@ setup(
         'aws-cdk.core>=1.54.0,<2.0.0',
         'aws-cdk.aws_lambda>=1.54.0,<2.0.0',
         'twilio>=6.44.0,<7.0.0',
-        'b-twilio-sdk-layer>=1.0.0,<2.0.0'
+        'b-twilio-sdk-layer>=1.0.0,<2.0.0',
+        'b-aws-cf-response>=0.0.2,<1.0.0'
     ],
     author='Robertas Stankevičius',
     author_email='robertas.stankevicius@biomapas.com',

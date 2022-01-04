@@ -4,6 +4,7 @@ from functools import lru_cache
 
 from aws_cdk.aws_lambda import Code, SingletonFunction, Runtime
 from aws_cdk.core import Stack, Duration
+from b_cfn_lambda_layer.package_version import PackageVersion
 from b_twilio_sdk_layer.layer import Layer as TwilioLayer
 
 
@@ -28,7 +29,15 @@ class TwilioActivitySingletonFunction(SingletonFunction):
             uuid='c854810d-19d3-4cbb-beae-20c5f12cf992',
             function_name=name,
             code=self.__code(),
-            layers=[TwilioLayer(scope, f'TwilioLayerFor{name}')],
+            layers=[
+                TwilioLayer(
+                    scope=scope,
+                    name=f'TwilioLayerFor{name}',
+                    dependencies={
+                        'b-aws-cf-response': PackageVersion.latest()
+                    }
+                )
+            ],
             timeout=Duration.minutes(1),
             handler='main.index.handler',
             runtime=Runtime.PYTHON_3_8

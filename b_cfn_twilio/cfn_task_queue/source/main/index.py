@@ -8,7 +8,7 @@ import twilio
 from botocore.exceptions import ClientError
 
 from .action import Action
-from .cfnresponse import CfnResponse
+from b_aws_cf_response.cfresponse import CfResponse
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -55,13 +55,13 @@ def handler(event, context) -> None:
 
     :return: No return.
     """
-    response = CfnResponse(event, context)
+    response = CfResponse(event, context)
 
     try:
         data, resource_id = __handle(event, context)
-        response.respond(CfnResponse.CfnResponseStatus.SUCCESS, data=data, resource_id=resource_id)
+        response.respond(CfResponse.CfResponseStatus.SUCCESS, data=data, resource_id=resource_id)
     except ClientError as ex:
         err_msg = f'{repr(ex)}:{ex.response}'
-        response.respond(CfnResponse.CfnResponseStatus.FAILED, status_reason=err_msg)
+        response.respond(CfResponse.CfResponseStatus.FAILED, status_reason=err_msg)
     except Exception as ex:
-        response.respond(CfnResponse.CfnResponseStatus.FAILED, status_reason=repr(ex))
+        response.respond(CfResponse.CfResponseStatus.FAILED, status_reason=repr(ex))
