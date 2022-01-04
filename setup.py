@@ -11,7 +11,7 @@ with open('VERSION') as file:
     VERSION = ''.join(VERSION.split())
 
 setup(
-    name='b_cfn_twilio_activity',
+    name='b_cfn_twilio',
     version=VERSION,
     license='Apache License 2.0',
     packages=find_packages(exclude=[
